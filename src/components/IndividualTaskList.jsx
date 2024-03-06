@@ -1,20 +1,23 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Task from './Task';
+import Button from './common/Button';
 
 function IndividualTaskList({ tasklists }) {
   const { id } = useParams();
-  const taskId = parseInt(id);
+
+  const openAddTaskForm = () => {};
 
   // Find the task list with the specified ID
-  const selectedTaskList = tasklists.find((tasklist) => tasklist.id === taskId);
+  const tasklist = tasklists.find((tasklist) => tasklist.id === id);
 
   return (
     <div className="individual-task">
-      <h1>{selectedTaskList.name}</h1>
+      <h1>{tasklist.name}</h1>
+      <Button onCLick={openAddTaskForm}>Add Task</Button>
       <ul>
         {/* Render tasks for the individual task list*/}
-        {selectedTaskList.tasks.map((task) => (
+        {tasklist.tasks.map((task) => (
           <li key={task.id}>
             <Task task={task} />
           </li>

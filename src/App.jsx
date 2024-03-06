@@ -11,25 +11,25 @@ const App = () => {
   // State to track tasklists
   const [tasklists, setTasklists] = useState([
     {
-      id: 1,
+      id: '1',
       name: 'Certification Project 4 - CIC',
       tasks: [
         {
-          id: 1,
+          id: '1',
           name: 'Create Wireframe',
           priority: 'Medium',
           dueDate: '2024-03-05',
           status: 'Completed',
         },
         {
-          id: 2,
+          id: '2',
           name: 'Create Flow Chart',
           priority: 'Medium',
           dueDate: '2024-03-05',
           status: 'Completed',
         },
         {
-          id: 3,
+          id: '3',
           name: 'Create Component Tree',
           priority: 'Medium',
           dueDate: '2024-03-06',
@@ -38,18 +38,18 @@ const App = () => {
       ],
     },
     {
-      id: 2,
+      id: '2',
       name: 'Miniproject',
       tasks: [
         {
-          id: 1,
+          id: '1',
           name: 'Part 1',
           priority: 'Medium',
           dueDate: '2024-03-01',
           status: 'Completed',
         },
         {
-          id: 2,
+          id: '2',
           name: 'Part 2',
           priority: 'Medium',
           dueDate: '2024-03-01',
@@ -73,7 +73,9 @@ const App = () => {
           <Routes>
             <Route
               path="/tasklists/"
-              element={<Home tasklists={tasklists} />}
+              element={
+                <Home tasklists={tasklists} setTasklists={setTasklists} />
+              }
             />
 
             {/* Render both Home and IndividualTaskList components */}
@@ -81,8 +83,11 @@ const App = () => {
               path="/tasklists/:id"
               element={
                 <>
-                  <Home tasklists={tasklists} />
-                  <IndividualTaskList tasklists={tasklists} />
+                  <Home tasklists={tasklists} setTasklists={setTasklists} />
+                  <IndividualTaskList
+                    tasklists={tasklists}
+                    setTasklists={setTasklists}
+                  />
                 </>
               }
             />
