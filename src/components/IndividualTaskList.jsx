@@ -6,26 +6,40 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 
-function IndividualTaskList({ tasklists }) {
+function IndividualTaskList({ tasklists, setTasklists }) {
   const navigate = useNavigate();
-  const backToTaskLists = (e) => {
+
+  const { id } = useParams();
+  // Find the task list with the specified ID
+  const tasklist = tasklists.find((tasklist) => tasklist.id === id);
+  console.log(tasklist);
+
+  const handleCloseTaskList = (e) => {
     e.preventDefault();
+    navigateToTasksLists();
+  };
+
+  const handleDeleteTaskList = (e) => {
+    e.preventDefault();
+    const newValue = tasklists.filter((tasklist) => tasklist.id !== id);
+    console.log(newValue);
+    setTasklists(newValue);
+    navigateToTasksLists();
+  };
+
+  const navigateToTasksLists = () => {
     navigate(`/tasklists`);
   };
 
   const openAddTaskForm = () => {};
 
-  const { id } = useParams();
-  // Find the task list with the specified ID
-  const tasklist = tasklists.find((tasklist) => tasklist.id === id);
-
   return (
     <div className="individual-task">
-      <CloseIcon onClick={backToTaskLists} />
+      <CloseIcon onClick={handleCloseTaskList} />
       <h2>{tasklist.name}</h2>
       <Button onCLick={openAddTaskForm}>Add Task</Button>
       <div>
-        <DeleteIcon />
+        <DeleteIcon onClick={handleDeleteTaskList} />
         <EditIcon />
       </div>
 
