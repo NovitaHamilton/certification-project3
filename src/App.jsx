@@ -58,6 +58,7 @@ const App = () => {
       ],
     },
   ]);
+
   return (
     <div className="App">
       <Router>
@@ -69,13 +70,21 @@ const App = () => {
           </ul>
         </nav>
         <div className="main-page">
-          {/* Render both Home and IndividualTaskList components */}
-          <Home tasklists={tasklists} />
           <Routes>
-            {/* <Route path="/tasklists/" element={<Home tasklists={tasklists} />} /> */}
+            <Route
+              path="/tasklists/"
+              element={<Home tasklists={tasklists} />}
+            />
+
+            {/* Render both Home and IndividualTaskList components */}
             <Route
               path="/tasklists/:id"
-              element={<IndividualTaskList tasklists={tasklists} />}
+              element={
+                <>
+                  <Home tasklists={tasklists} />
+                  <IndividualTaskList tasklists={tasklists} />
+                </>
+              }
             />
           </Routes>
         </div>
