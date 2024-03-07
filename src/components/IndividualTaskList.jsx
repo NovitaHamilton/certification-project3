@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Task from './Task';
 import Button from './common/Button';
@@ -7,12 +7,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 
 function IndividualTaskList({ tasklists, setTasklists }) {
-  const navigate = useNavigate();
+  // State to track whether Task List is in editing mode or not
+  const [isEditing, setIsEditing] = useState(false);
+  // State to track edited name
+  const [editedName, setEditedName] = useState('');
 
+  const navigate = useNavigate();
   const { id } = useParams();
+
   // Find the task list with the specified ID
   const tasklist = tasklists.find((tasklist) => tasklist.id === id);
-  console.log(tasklist);
 
   const handleCloseTaskList = (e) => {
     e.preventDefault();
@@ -22,9 +26,29 @@ function IndividualTaskList({ tasklists, setTasklists }) {
   const handleDeleteTaskList = (e) => {
     e.preventDefault();
     const newValue = tasklists.filter((tasklist) => tasklist.id !== id);
-    console.log(newValue);
     setTasklists(newValue);
     navigateToTasksLists();
+  };
+
+  const handleEditTaskList = (e) => {
+    e.preventDefault();
+    setIsEditing(true);
+    setEditedName(tasklist.name);
+  };
+  console.log(editedName);
+
+  const handleSaveEdit = (e) => {
+    e.preventDefault();
+    console.log('Save Edit button clicked!');
+    const newValue = tasklists.map((tasklist) => {
+      if (tasklist.id === id) {
+        return { ...tasklist, name: editedName };
+      }
+      return tasklist;
+    });
+    setTasklists(newValue);
+    setIsEditing(false);
+    console.log(isEditing);
   };
 
   const navigateToTasksLists = () => {
@@ -35,13 +59,35 @@ function IndividualTaskList({ tasklists, setTasklists }) {
 
   return (
     <div className="individual-task">
-      <CloseIcon onClick={handleCloseTaskList} />
-      <h2>{tasklist.name}</h2>
-      <Button onCLick={openAddTaskForm}>Add Task</Button>
-      <div>
-        <DeleteIcon onClick={handleDeleteTaskList} />
-        <EditIcon />
+      <CloseIcon className="close-icon" onClick={handleCloseTaskList} />
+      <div className="tasklist-header">
+        {isEditing ? (
+          <input
+            type="text"
+            value={editedName}
+            onChange={(e) => setEditedName(e.target.value)}
+          />
+        ) : (
+          <h2>{tasklist.name}</h2>
+        )}
+
+        <div className="tasklist-icons">
+          <DeleteIcon onClick={handleDeleteTaskList} />
+          {isEditing ? (
+            <Button
+              className="save-tasklist-edit-button"
+              onClick={handleSaveEdit}
+            >
+              Save Edit
+            </Button>
+          ) : (
+            <EditIcon onClick={handleEditTaskList} />
+          )}
+        </div>
       </div>
+      <Button className="add-task-button" onClick={openAddTaskForm}>
+        Add Task
+      </Button>
 
       <ul>
         {/* Render tasks for the individual task list*/}

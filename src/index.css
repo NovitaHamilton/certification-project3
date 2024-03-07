@@ -46,12 +46,35 @@ svg {
 .individual-task {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   gap: 1rem;
   text-decoration: none;
+  border: 0.1rem solid;
+  padding: 1rem;
 }
 
 .individual-task ul {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.close-icon {
+  align-self: flex-end;
+}
+
+.tasklist-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10rem;
+}
+
+.tasklist-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.save-tasklist-edit-button {
 }

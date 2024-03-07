@@ -72,6 +72,12 @@ const App = () => {
         <div className="main-page">
           <Routes>
             <Route
+              path="/"
+              element={
+                <Home tasklists={tasklists} setTasklists={setTasklists} />
+              }
+            />
+            <Route
               path="/tasklists/"
               element={
                 <Home tasklists={tasklists} setTasklists={setTasklists} />

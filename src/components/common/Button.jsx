@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Button({ children, onCLick }) {
+function Button({ children, onClick }) {
   //'children' represents the content inside the 'Button' component, between the opening and closing tags, special prop from React
-  return <button onClick={onCLick}>{children}</button>;
+  return <button onClick={onClick}>{children}</button>;
 }
 
 export default Button;

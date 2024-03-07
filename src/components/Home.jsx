@@ -15,14 +15,15 @@ function Home({ tasklists, setTasklists }) {
       name: 'New Task List',
       tasks: [],
     };
-    setTasklists([...tasklists, newTaskList]);
+    const newValue = [...tasklists, newTaskList];
+    setTasklists(newValue);
     navigate(`/tasklists/${newTaskList.id}`); // to navigate to the newTaskList route
   };
 
   return (
     <div className="Home">
       <h1>My Task Lists</h1>
-      <Button onCLick={handleAddTaskList}>Add Task List</Button>
+      <Button onClick={handleAddTaskList}>Add Task List</Button>
       <div>
         <TaskLists tasklists={tasklists} />
       </div>
