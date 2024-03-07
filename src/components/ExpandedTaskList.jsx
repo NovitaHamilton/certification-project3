@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Task from './Task';
 import Button from './common/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
+import ExpandedTask from './ExpandedTask';
 
-function IndividualTaskList({ tasklists, setTasklists }) {
+function ExpandedTaskList({ tasklists, setTasklists }) {
   // State to track whether Task List is in editing mode or not
   const [isEditing, setIsEditing] = useState(false);
   // State to track edited name
   const [editedName, setEditedName] = useState('');
+  // State to track the Expanded Task Id
+  const [expandedTaskId, setExpandedTaskId] = useState();
 
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // Reset expandedTaskId when user navigates to a different task list (id change)
+  useEffect(() => {
+    setExpandedTaskId(null);
+  }, [id]);
+
   // Find the task list with the specified ID
   const tasklist = tasklists.find((tasklist) => tasklist.id === id);
+
+  // onClick Functions
 
   const handleCloseTaskList = (e) => {
     e.preventDefault();
@@ -35,7 +45,6 @@ function IndividualTaskList({ tasklists, setTasklists }) {
     setIsEditing(true);
     setEditedName(tasklist.name);
   };
-  console.log(editedName);
 
   const handleSaveEdit = (e) => {
     e.preventDefault();
@@ -51,18 +60,22 @@ function IndividualTaskList({ tasklists, setTasklists }) {
     console.log(isEditing);
   };
 
-  const navigateToTasksLists = () => {
-    navigate(`/tasklists`);
-  };
-
   const handleExportJson = (e) => {
     e.preventDefault();
+  };
+
+  const handleToggleExpandedTask = (taskId) => {
+    setExpandedTaskId(taskId === expandedTaskId ? null : taskId);
+  };
+
+  const navigateToTasksLists = () => {
+    navigate(`/tasklists`);
   };
 
   const openAddTaskForm = () => {};
 
   return (
-    <div className="individual-task">
+    <div className="expanded-tasklist">
       <CloseIcon className="close-icon" onClick={handleCloseTaskList} />
       <div className="tasklist-header">
         {isEditing ? (
@@ -75,7 +88,7 @@ function IndividualTaskList({ tasklists, setTasklists }) {
           <h2>{tasklist.name}</h2>
         )}
 
-        <div className="tasklist-icons">
+        <div className="edit-delete-icons">
           {isEditing ? (
             <Button
               className="save-tasklist-edit-button"
@@ -93,14 +106,28 @@ function IndividualTaskList({ tasklists, setTasklists }) {
         Add Task
       </Button>
 
-      <ul>
-        {/* Render tasks for the individual task list*/}
-        {tasklist.tasks.map((task) => (
-          <li key={task.id}>
-            <Task task={task} />
-          </li>
-        ))}
-      </ul>
+      <div className="tasks-container">
+        <ul>
+          {/* Render tasks for the individual task list*/}
+          {tasklist.tasks.map((task) => (
+            <li
+              key={task.id}
+              role="button"
+              onClick={() => handleToggleExpandedTask(task.id)}
+            >
+              {/* {expandedTaskId !== task.id && <Task task={task} />}
+              {expandedTaskId === task.id && (
+                <ExpandedTask tasklist={tasklist} task={task} />
+              )} */}
+              {expandedTaskId !== task.id ? (
+                <Task task={task} />
+              ) : (
+                <ExpandedTask tasklist={tasklist} task={task} />
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="export-json-button">
         <Button onClick={handleExportJson}>Export as json file</Button>
@@ -109,4 +136,4 @@ function IndividualTaskList({ tasklists, setTasklists }) {
   );
 }
 
-export default IndividualTaskList;
+export default ExpandedTaskList;

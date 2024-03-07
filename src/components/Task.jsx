@@ -1,10 +1,10 @@
 function Task({ task }) {
   return (
     <div className="task-item">
-      <p>{task.name}</p>
-      <p>{task.priority}</p>
-      <p>{task.dueDate}</p>
-      <p>{task.status}</p>
+      <p className="task-name">{task.name}</p>
+      <p className="task-info">{task.priority}</p>
+      <p className="task-info">{task.dueDate}</p>
+      <p className="task-info">{task.status}</p>
     </div>
   );
 }

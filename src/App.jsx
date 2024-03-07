@@ -5,7 +5,8 @@ import React, { useState } from 'react';
  * Importing other components
  */
 import Home from './components/Home';
-import IndividualTaskList from './components/IndividualTaskList';
+import ExpandedTaskList from './components/ExpandedTaskList';
+import ExpandedTask from './components/ExpandedTask';
 
 const App = () => {
   // State to track tasklists
@@ -90,7 +91,7 @@ const App = () => {
               element={
                 <>
                   <Home tasklists={tasklists} setTasklists={setTasklists} />
-                  <IndividualTaskList
+                  <ExpandedTaskList
                     tasklists={tasklists}
                     setTasklists={setTasklists}
                   />
