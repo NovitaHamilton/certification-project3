@@ -20,10 +20,16 @@ function Home({ tasklists, setTasklists }) {
     navigate(`/tasklists/${newTaskList.id}`); // to navigate to the newTaskList route
   };
 
+  const handleImportJson = (e) => {
+    e.preventDefault();
+  };
   return (
     <div className="Home">
       <h1>My Task Lists</h1>
-      <Button onClick={handleAddTaskList}>Add Task List</Button>
+      <div className="tasklists-buttons">
+        <Button onClick={handleAddTaskList}>Add Task List</Button>
+        <Button onClick={handleImportJson}>Import json file</Button>
+      </div>
       <div>
         <TaskLists tasklists={tasklists} />
       </div>

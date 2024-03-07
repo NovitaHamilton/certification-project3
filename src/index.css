@@ -37,6 +37,12 @@ svg {
   gap: 2rem;
 }
 
+.tasklists-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .task-item {
   display: flex;
   flex-direction: row;
@@ -76,5 +82,7 @@ svg {
   gap: 0.5rem;
 }
 
-.save-tasklist-edit-button {
+.export-json-button {
+  align-self: flex-end;
+  margin-top: 3rem;
 }

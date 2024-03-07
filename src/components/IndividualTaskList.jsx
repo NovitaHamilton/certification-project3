@@ -55,6 +55,10 @@ function IndividualTaskList({ tasklists, setTasklists }) {
     navigate(`/tasklists`);
   };
 
+  const handleExportJson = (e) => {
+    e.preventDefault();
+  };
+
   const openAddTaskForm = () => {};
 
   return (
@@ -72,7 +76,6 @@ function IndividualTaskList({ tasklists, setTasklists }) {
         )}
 
         <div className="tasklist-icons">
-          <DeleteIcon onClick={handleDeleteTaskList} />
           {isEditing ? (
             <Button
               className="save-tasklist-edit-button"
@@ -83,6 +86,7 @@ function IndividualTaskList({ tasklists, setTasklists }) {
           ) : (
             <EditIcon onClick={handleEditTaskList} />
           )}
+          <DeleteIcon onClick={handleDeleteTaskList} />
         </div>
       </div>
       <Button className="add-task-button" onClick={openAddTaskForm}>
@@ -97,6 +101,10 @@ function IndividualTaskList({ tasklists, setTasklists }) {
           </li>
         ))}
       </ul>
+
+      <div className="export-json-button">
+        <Button onClick={handleExportJson}>Export as json file</Button>
+      </div>
     </div>
   );
 }
