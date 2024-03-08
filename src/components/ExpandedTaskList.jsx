@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandedTask from './ExpandedTask';
+import AddTaskForm from './AddTaskForm';
 
 function ExpandedTaskList({ tasklists, setTasklists }) {
   // State to track whether Task List is in editing mode or not
@@ -14,6 +15,8 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
   const [editedName, setEditedName] = useState('');
   // State to track the Expanded Task Id
   const [expandedTaskId, setExpandedTaskId] = useState();
+  // State to track if AddTaskForm open
+  const [isAddTaskFormOpen, setIsAddTaskFormOpen] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -72,11 +75,16 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
     navigate(`/tasklists`);
   };
 
-  const openAddTaskForm = () => {};
+  const openAddTaskForm = () => {
+    setIsAddTaskFormOpen(true);
+  };
 
   return (
     <div className="expanded-tasklist">
-      <CloseIcon className="close-icon" onClick={handleCloseTaskList} />
+      <CloseIcon
+        className="tasklist-close-icon"
+        onClick={handleCloseTaskList}
+      />
       <div className="tasklist-header">
         {isEditing ? (
           <input
@@ -102,10 +110,18 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
           <DeleteIcon onClick={handleDeleteTaskList} />
         </div>
       </div>
-      <Button className="add-task-button" onClick={openAddTaskForm}>
-        Add Task
-      </Button>
-
+      {isAddTaskFormOpen ? (
+        <AddTaskForm
+          tasklists={tasklists}
+          setTasklists={setTasklists}
+          tasklist={tasklist}
+          setIsAddTaskFormOpen={setIsAddTaskFormOpen}
+        />
+      ) : (
+        <Button className="add-task-button" onClick={openAddTaskForm}>
+          Add Task
+        </Button>
+      )}
       <div className="tasks-container">
         <ul>
           {/* Render tasks for the individual task list*/}
@@ -115,10 +131,6 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
               role="button"
               onClick={() => handleToggleExpandedTask(task.id)}
             >
-              {/* {expandedTaskId !== task.id && <Task task={task} />}
-              {expandedTaskId === task.id && (
-                <ExpandedTask tasklist={tasklist} task={task} />
-              )} */}
               {expandedTaskId !== task.id ? (
                 <Task task={task} />
               ) : (
@@ -128,7 +140,6 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
           ))}
         </ul>
       </div>
-
       <div className="export-json-button">
         <Button onClick={handleExportJson}>Export as json file</Button>
       </div>

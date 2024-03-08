@@ -89,7 +89,7 @@ svg {
   text-align: center;
 }
 
-.close-icon {
+.tasklist-close-icon {
   align-self: flex-end;
 }
 
@@ -133,4 +133,24 @@ svg {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-content: flex-start;
+}
+
+/* Add Task Form*/
+
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-form-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-form-details {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
