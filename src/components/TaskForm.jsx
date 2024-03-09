@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import SourceIcon from '@mui/icons-material/Source';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -7,11 +7,13 @@ import { statusOptions, priorityOptions } from '../../data/TaskFormOptions';
 import Button from './common/Button';
 import { v4 as uuidv4 } from 'uuid';
 
-function AddTaskForm({
+function TaskForm({
   tasklists,
   setTasklists,
   tasklist,
   setIsAddTaskFormOpen,
+  taskToEdit,
+  setIsTaskEditing,
 }) {
   const [formInput, setFormInput] = useState({
     name: '',
@@ -20,6 +22,13 @@ function AddTaskForm({
     status: '',
     priority: '',
   });
+
+  // If there's taskToEdit detected, the form input will be populated by the taskToEdit object
+  useEffect(() => {
+    if (taskToEdit) {
+      setFormInput(taskToEdit);
+    }
+  }, [taskToEdit]);
 
   const handleInputChange = (e) => {
     e.preventDefault();
@@ -30,28 +39,44 @@ function AddTaskForm({
   const handleSaveTask = (e) => {
     e.preventDefault();
     const newTask = {
-      id: uuidv4(),
+      id: taskToEdit ? taskToEdit.id : uuidv4(),
       name: formInput.name,
       dueDate: formInput.dueDate,
       status: formInput.status,
       priority: formInput.priority,
     };
 
-    const updatedTasklists = tasklists.map((list) => {
-      // if the tasklist id matches this particular id
-      if (list.id === tasklist.id) {
-        // Add newTask to the tasks array of this tasklist
-        return {
-          ...list,
-          tasks: [...list.tasks, newTask],
-        };
-      }
-      // if not match return the tasklist unchanged
-      return list;
-    });
+    if (taskToEdit) {
+      const updatedTasklists = tasklists.map((list) => {
+        // if the tasklist id matches this particular id
+        if (list.id === tasklist.id) {
+          // Add newTask to the tasks array of this tasklist
+          return {
+            ...list,
+            tasks: list.tasks.map((task) =>
+              task.id === taskToEdit.id ? newTask : task
+            ),
+          };
+        }
+        return list;
+      });
+      setTasklists(updatedTasklists);
+    } else {
+      const updatedTasklists = tasklists.map((list) => {
+        // if the tasklist id matches this particular id
+        if (list.id === tasklist.id) {
+          // Add newTask to the tasks array of this tasklist
+          return {
+            ...list,
+            tasks: [...list.tasks, newTask],
+          };
+        }
+        // if not match return the tasklist unchanged
+        return list;
+      });
 
-    setTasklists(updatedTasklists);
-
+      setTasklists(updatedTasklists);
+    }
     // Reset formInput
     setFormInput({
       name: '',
@@ -61,14 +86,18 @@ function AddTaskForm({
       priority: '',
     });
 
-    // Close Add Task Form
-    setIsAddTaskFormOpen(false);
+    // Close Task Form
+    closeTaskForm();
   };
 
-  const handleCloseTask = (e) => {
+  const handleCloseTaskForm = (e) => {
     e.preventDefault();
-    setIsAddTaskFormOpen(false);
+    // Close Task Form
+    closeTaskForm();
   };
+
+  const closeTaskForm = () =>
+    taskToEdit ? setIsTaskEditing(false) : setIsAddTaskFormOpen(false);
 
   return (
     <form className="add-task-form" onSubmit={handleSaveTask}>
@@ -87,13 +116,13 @@ function AddTaskForm({
             <input
               name="dueDate"
               type="date"
-              value={formInput.date}
+              value={formInput.dueDate}
               onChange={handleInputChange}
               required
             ></input>
           </label>
         </div>
-        <CloseIcon className="close-icon" onClick={handleCloseTask} />
+        <CloseIcon className="close-icon" onClick={handleCloseTaskForm} />
       </div>
       <label className="task-form-details">
         <SourceIcon />
@@ -101,7 +130,6 @@ function AddTaskForm({
           name="taskList"
           value={formInput.taskList}
           onChange={handleInputChange}
-          required
         >
           <option value="">{tasklist.name}</option>
           {tasklists
@@ -150,4 +178,4 @@ function AddTaskForm({
   );
 }
 
-export default AddTaskForm;
+export default TaskForm;

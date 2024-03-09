@@ -6,11 +6,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandedTask from './ExpandedTask';
-import AddTaskForm from './AddTaskForm';
+import AddTaskForm from './TaskForm';
 
 function ExpandedTaskList({ tasklists, setTasklists }) {
   // State to track whether Task List is in editing mode or not
-  const [isEditing, setIsEditing] = useState(false);
+  const [isTasklistEditing, setIsTasklistEditing] = useState(false);
   // State to track edited name
   const [editedName, setEditedName] = useState('');
   // State to track the Expanded Task Id
@@ -45,13 +45,12 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
 
   const handleEditTaskList = (e) => {
     e.preventDefault();
-    setIsEditing(true);
+    setIsTasklistEditing(true);
     setEditedName(tasklist.name);
   };
 
   const handleSaveEdit = (e) => {
     e.preventDefault();
-    console.log('Save Edit button clicked!');
     const newValue = tasklists.map((tasklist) => {
       if (tasklist.id === id) {
         return { ...tasklist, name: editedName };
@@ -59,16 +58,21 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
       return tasklist;
     });
     setTasklists(newValue);
-    setIsEditing(false);
-    console.log(isEditing);
+    setIsTasklistEditing(false);
   };
 
   const handleExportJson = (e) => {
     e.preventDefault();
+    e.stopPropagation();
   };
 
-  const handleToggleExpandedTask = (taskId) => {
-    setExpandedTaskId(taskId === expandedTaskId ? null : taskId);
+  const handleToggleExpandedTask = (e, taskId) => {
+    // Check if the event is triggered from 'close-icon'
+    if (e && e.target.classList.contains('close-icon')) {
+      setExpandedTaskId(null); // Close expanded task
+    } else {
+      setExpandedTaskId(taskId === expandedTaskId ? expandedTaskId : taskId);
+    }
   };
 
   const navigateToTasksLists = () => {
@@ -86,7 +90,7 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
         onClick={handleCloseTaskList}
       />
       <div className="tasklist-header">
-        {isEditing ? (
+        {isTasklistEditing ? (
           <input
             type="text"
             value={editedName}
@@ -97,7 +101,7 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
         )}
 
         <div className="edit-delete-icons">
-          {isEditing ? (
+          {isTasklistEditing ? (
             <Button
               className="save-tasklist-edit-button"
               onClick={handleSaveEdit}
@@ -129,12 +133,18 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
             <li
               key={task.id}
               role="button"
-              onClick={() => handleToggleExpandedTask(task.id)}
+              onClick={(e) => handleToggleExpandedTask(e, task.id)}
             >
               {expandedTaskId !== task.id ? (
                 <Task task={task} />
               ) : (
-                <ExpandedTask tasklist={tasklist} task={task} />
+                <ExpandedTask
+                  tasklist={tasklist}
+                  task={task}
+                  tasklists={tasklists}
+                  setTasklists={setTasklists}
+                  handleToggleExpandedTask={handleToggleExpandedTask}
+                />
               )}
             </li>
           ))}
