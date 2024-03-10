@@ -20,15 +20,29 @@ function Home({ tasklists, setTasklists }) {
     navigate(`/tasklists/${newTaskList.id}`); // to navigate to the newTaskList route
   };
 
-  const handleImportJson = (e) => {
+  const handleLoadLocalStorage = (e) => {
     e.preventDefault();
+    // Retrieve data from localStorage
+    const storedTasklists = localStorage.getItem('tasklists');
+    if (storedTasklists) {
+      // Parse JSON string into an array of task lists
+      const parsedTasklists = JSON.parse(storedTasklists);
+      console.log('Parsedtasklist:', parsedTasklists);
+      // Update state with the loaded task lists
+      setTasklists(parsedTasklists);
+      console.log(tasklists);
+    } else {
+      // If no data found in localStorage, display error message
+      console.error('No data found in localStorage');
+    }
   };
+
   return (
     <div className="Home">
       <h1>My Task Lists</h1>
       <div className="tasklists-buttons">
         <Button onClick={handleAddTaskList}>Add Task List</Button>
-        <Button onClick={handleImportJson}>Import json file</Button>
+        <Button onClick={handleLoadLocalStorage}>Load localStorage</Button>
       </div>
       <div>
         <TaskLists tasklists={tasklists} />

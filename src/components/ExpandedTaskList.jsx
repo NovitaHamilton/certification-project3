@@ -61,9 +61,9 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
     setIsTasklistEditing(false);
   };
 
-  const handleExportJson = (e) => {
+  const handleSaveToLocalStorage = (e) => {
     e.preventDefault();
-    e.stopPropagation();
+    localStorage.setItem('tasklists', JSON.stringify(tasklists));
   };
 
   const handleToggleExpandedTask = (e, taskId) => {
@@ -151,7 +151,7 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
         </ul>
       </div>
       <div className="export-json-button">
-        <Button onClick={handleExportJson}>Export as json file</Button>
+        <Button onClick={handleSaveToLocalStorage}>Save to localStorage</Button>
       </div>
     </div>
   );
