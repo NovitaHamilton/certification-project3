@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SourceIcon from '@mui/icons-material/Source';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FlagIcon from '@mui/icons-material/Flag';
-import AddTaskForm from './TaskForm';
+import TaskForm from './TaskForm';
 
 function ExpandedTask({
   task,
@@ -83,7 +83,7 @@ function ExpandedTask({
           </div>
         </>
       ) : (
-        <AddTaskForm
+        <TaskForm
           tasklists={tasklists}
           setTasklists={setTasklists}
           tasklist={tasklist}

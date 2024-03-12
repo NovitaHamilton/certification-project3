@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandedTask from './ExpandedTask';
-import AddTaskForm from './TaskForm';
+import TaskForm from './TaskForm';
 
 function ExpandedTaskList({ tasklists, setTasklists }) {
   // State to track whether Task List is in editing mode or not
@@ -115,7 +115,7 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
         </div>
       </div>
       {isAddTaskFormOpen ? (
-        <AddTaskForm
+        <TaskForm
           tasklists={tasklists}
           setTasklists={setTasklists}
           tasklist={tasklist}
