@@ -42,7 +42,7 @@ function ExpandedTask({ task, tasklist, handleToggleExpandedTask }) {
       {!isTaskEditing ? (
         <>
           <div className="above-task-header">
-            <Button onClick={markTaskComplete}>Mark as Complete</Button>
+            {/* <Button onClick={markTaskComplete}>Mark as Complete</Button> */}
             <CloseIcon className="close-icon" onClick={handleCloseTask} />
           </div>
           <div className="task-header">
@@ -57,10 +57,10 @@ function ExpandedTask({ task, tasklist, handleToggleExpandedTask }) {
             </div>
           </div>
           <div className="task-details">
-            <p>
+            {/* <p>
               <SourceIcon />
               {tasklist.name}
-            </p>
+            </p> */}
             <p>
               <CheckCircleOutlineIcon />
               {task.status}

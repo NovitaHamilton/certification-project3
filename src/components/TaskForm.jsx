@@ -18,13 +18,13 @@ function TaskForm({
   const [formInput, setFormInput] = useState({
     name: '',
     dueDate: '',
-    taskList: tasklist.name,
+    // taskList: tasklist.name,
     status: '',
     priority: '',
   });
 
   const dispatch = useDispatch();
-  const tasklists = useSelector((store) => store.tasklists);
+  // const tasklists = useSelector((store) => store.tasklists);
 
   // If there's taskToEdit detected, the form input will be populated by the taskToEdit object
   useEffect(() => {
@@ -105,7 +105,7 @@ function TaskForm({
         </div>
         <CloseIcon className="close-icon" onClick={handleCloseTaskForm} />
       </div>
-      <label className="task-form-details">
+      {/*<label className="task-form-details">
         <SourceIcon />
         <select
           name="taskList"
@@ -121,7 +121,7 @@ function TaskForm({
               </option>
             ))}
         </select>
-      </label>
+            </label>*/}
       <label className="task-form-details">
         <CheckCircleOutlineIcon />
         <select

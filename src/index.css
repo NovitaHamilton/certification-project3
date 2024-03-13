@@ -132,8 +132,9 @@ svg {
 .above-task-header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-content: flex-start;
+  gap: 10rem;
 }
 
 /* Add Task Form*/
