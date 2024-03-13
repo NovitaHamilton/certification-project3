@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import Task from './Task';
+function TaskLists() {
+  const tasklists = useSelector((store) => store.tasklists);
+  console.log(tasklists);
 
-function TaskLists({ tasklists }) {
   return (
     <div className="task-lists">
       <ul>

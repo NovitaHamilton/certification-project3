@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import Button from './common/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -8,15 +7,13 @@ import SourceIcon from '@mui/icons-material/Source';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FlagIcon from '@mui/icons-material/Flag';
 import TaskForm from './TaskForm';
+import { useDispatch } from 'react-redux';
+import { deleteTask } from '../reducers/tasklistsReducer';
 
-function ExpandedTask({
-  task,
-  tasklist,
-  tasklists,
-  setTasklists,
-  handleToggleExpandedTask,
-}) {
+function ExpandedTask({ task, tasklist, handleToggleExpandedTask }) {
   const [isTaskEditing, setIsTaskEditing] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleCloseTask = (e) => {
     e.preventDefault();
@@ -35,16 +32,9 @@ function ExpandedTask({
 
   const handleDeleteTask = (e) => {
     e.preventDefault();
-    const newTasks = tasklist.tasks.filter((item) => item.id !== task.id);
-    const updatedTasklists = tasklists.map((list) => {
-      //if the tasklist id matches this particular id
-      if (list.id === tasklist.id) {
-        // Update the tasks array with the newTasks
-        return { ...list, tasks: newTasks };
-      }
-      return list;
-    });
-    setTasklists(updatedTasklists);
+    const taskListId = tasklist.id;
+    const taskId = task.id;
+    dispatch(deleteTask({ taskListId, taskId }));
   };
 
   return (
@@ -84,8 +74,6 @@ function ExpandedTask({
         </>
       ) : (
         <TaskForm
-          tasklists={tasklists}
-          setTasklists={setTasklists}
           tasklist={tasklist}
           setIsTaskEditing={setIsTaskEditing}
           taskToEdit={{ ...task, taskList: tasklist.name }}

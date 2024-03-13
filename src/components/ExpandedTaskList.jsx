@@ -7,8 +7,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandedTask from './ExpandedTask';
 import TaskForm from './TaskForm';
+import { editTaskList, deleteTaskList } from '../reducers/tasklistsReducer';
+import { useSelector, useDispatch } from 'react-redux';
 
-function ExpandedTaskList({ tasklists, setTasklists }) {
+function ExpandedTaskList() {
   // State to track whether Task List is in editing mode or not
   const [isTasklistEditing, setIsTasklistEditing] = useState(false);
   // State to track edited name
@@ -17,6 +19,10 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
   const [expandedTaskId, setExpandedTaskId] = useState();
   // State to track if AddTaskForm open
   const [isAddTaskFormOpen, setIsAddTaskFormOpen] = useState(false);
+
+  const tasklists = useSelector((store) => store.tasklists);
+  // To access dispatch() function
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -27,6 +33,7 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
   }, [id]);
 
   // Find the task list with the specified ID
+
   const tasklist = tasklists.find((tasklist) => tasklist.id === id);
 
   // onClick Functions
@@ -38,8 +45,7 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
 
   const handleDeleteTaskList = (e) => {
     e.preventDefault();
-    const newValue = tasklists.filter((tasklist) => tasklist.id !== id);
-    setTasklists(newValue);
+    dispatch(deleteTaskList(id));
     navigateToTasksLists();
   };
 
@@ -51,13 +57,8 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
 
   const handleSaveEdit = (e) => {
     e.preventDefault();
-    const newValue = tasklists.map((tasklist) => {
-      if (tasklist.id === id) {
-        return { ...tasklist, name: editedName };
-      }
-      return tasklist;
-    });
-    setTasklists(newValue);
+    console.log('Action Payload:', { id, editedName });
+    dispatch(editTaskList({ id, editedName }));
     setIsTasklistEditing(false);
   };
 
@@ -116,8 +117,6 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
       </div>
       {isAddTaskFormOpen ? (
         <TaskForm
-          tasklists={tasklists}
-          setTasklists={setTasklists}
           tasklist={tasklist}
           setIsAddTaskFormOpen={setIsAddTaskFormOpen}
         />
@@ -141,8 +140,6 @@ function ExpandedTaskList({ tasklists, setTasklists }) {
                 <ExpandedTask
                   tasklist={tasklist}
                   task={task}
-                  tasklists={tasklists}
-                  setTasklists={setTasklists}
                   handleToggleExpandedTask={handleToggleExpandedTask}
                 />
               )}

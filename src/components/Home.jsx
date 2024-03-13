@@ -3,8 +3,14 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Button from './common/Button';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addTaskList, loadLocalStorage } from '../reducers/tasklistsReducer';
 
-function Home({ tasklists, setTasklists }) {
+function Home() {
+  // To access global state
+  // const tasklists = useSelector((store) => store.tasklists);
+  // To access dispatch() function
+  const dispatch = useDispatch();
   // To access navigate function
   const navigate = useNavigate();
 
@@ -15,8 +21,7 @@ function Home({ tasklists, setTasklists }) {
       name: 'New Task List',
       tasks: [],
     };
-    const newValue = [...tasklists, newTaskList];
-    setTasklists(newValue);
+    dispatch(addTaskList(newTaskList));
     navigate(`/tasklists/${newTaskList.id}`); // to navigate to the newTaskList route
   };
 
@@ -29,8 +34,7 @@ function Home({ tasklists, setTasklists }) {
       const parsedTasklists = JSON.parse(storedTasklists);
       console.log('Parsedtasklist:', parsedTasklists);
       // Update state with the loaded task lists
-      setTasklists(parsedTasklists);
-      console.log(tasklists);
+      dispatch(loadLocalStorage(parsedTasklists));
     } else {
       // If no data found in localStorage, display error message
       console.error('No data found in localStorage');
@@ -45,7 +49,7 @@ function Home({ tasklists, setTasklists }) {
         <Button onClick={handleLoadLocalStorage}>Load localStorage</Button>
       </div>
       <div>
-        <TaskLists tasklists={tasklists} />
+        <TaskLists />
       </div>
     </div>
   );

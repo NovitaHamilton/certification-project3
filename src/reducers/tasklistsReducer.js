@@ -58,13 +58,17 @@ const tasklistsSlice = createSlice({
       state.push(action.payload); // Add the new task list to the state
     },
     editTaskList(state, action) {
-      const { taskListId, editedName } = action.payload;
-      const taskListToEdit = state.find(
-        (tasklist) => tasklist.id === taskListId
-      );
-      if (taskListToEdit) {
-        taskListToEdit.name = editedName;
-      }
+      console.log('Action Type:', action.type);
+      console.log('Action Payload:', action.payload);
+
+      // initially used the destructuring method below (same with the other reducers) but for some reason it's causing issue, taskListId becomes undefined. Worked around it by accessing the value directly from action.payload
+      // const { taskListId, newTask } = action.payload;
+      return state.map((tasklist) => {
+        if (tasklist.id === action.payload.id) {
+          return { ...tasklist, name: action.payload.editedName };
+        }
+        return tasklist;
+      });
     },
     deleteTaskList(state, action) {
       return state.filter((tasklist) => tasklist.id !== action.payload);
@@ -105,6 +109,9 @@ const tasklistsSlice = createSlice({
         );
       }
     },
+    loadLocalStorage(state, action) {
+      return action.payload;
+    },
   },
 });
 
@@ -116,6 +123,7 @@ export const {
   addTask,
   editTask,
   deleteTask,
+  loadLocalStorage,
 } = tasklistsSlice.actions;
 
 // Export reducers

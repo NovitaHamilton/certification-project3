@@ -6,7 +6,7 @@ import tasklistsReducer from './reducers/tasklistsReducer';
 // Creating the store w/reducers
 const store = configureStore({
   reducer: {
-    taksklists: tasklistsReducer,
+    tasklists: tasklistsReducer,
   },
 });
 

@@ -6,10 +6,10 @@ import FlagIcon from '@mui/icons-material/Flag';
 import { statusOptions, priorityOptions } from '../../data/TaskFormOptions';
 import Button from './common/Button';
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask, editTask } from '../reducers/tasklistsReducer';
 
 function TaskForm({
-  tasklists,
-  setTasklists,
   tasklist,
   setIsAddTaskFormOpen,
   taskToEdit,
@@ -22,6 +22,9 @@ function TaskForm({
     status: '',
     priority: '',
   });
+
+  const dispatch = useDispatch();
+  const tasklists = useSelector((store) => store.tasklists);
 
   // If there's taskToEdit detected, the form input will be populated by the taskToEdit object
   useEffect(() => {
@@ -46,36 +49,14 @@ function TaskForm({
       priority: formInput.priority,
     };
 
-    if (taskToEdit) {
-      const updatedTasklists = tasklists.map((list) => {
-        // if the tasklist id matches this particular id
-        if (list.id === tasklist.id) {
-          // Add newTask to the tasks array of this tasklist
-          return {
-            ...list,
-            tasks: list.tasks.map((task) =>
-              task.id === taskToEdit.id ? newTask : task
-            ),
-          };
-        }
-        return list;
-      });
-      setTasklists(updatedTasklists);
-    } else {
-      const updatedTasklists = tasklists.map((list) => {
-        // if the tasklist id matches this particular id
-        if (list.id === tasklist.id) {
-          // Add newTask to the tasks array of this tasklist
-          return {
-            ...list,
-            tasks: [...list.tasks, newTask],
-          };
-        }
-        // if not match return the tasklist unchanged
-        return list;
-      });
+    const taskListId = tasklist.id;
+    const taskId = newTask.id;
+    console.log(taskId);
 
-      setTasklists(updatedTasklists);
+    if (taskToEdit) {
+      dispatch(editTask({ taskListId, newTask }));
+    } else {
+      dispatch(addTask({ taskListId, newTask }));
     }
     // Reset formInput
     setFormInput({
