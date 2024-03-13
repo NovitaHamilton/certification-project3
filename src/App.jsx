@@ -6,7 +6,6 @@ import React, { useState } from 'react';
  */
 import Home from './components/Home';
 import ExpandedTaskList from './components/ExpandedTaskList';
-import ExpandedTask from './components/ExpandedTask';
 
 const App = () => {
   // State to track tasklists
