@@ -1,5 +1,5 @@
-# certification-project4
-Interactive task manager application with React-Redux, Node-Express, NoSQL DB, Testing &amp; Security
+# certification-project3
+Interactive task manager application with React Router and React-Redux
 
 ### Instructions
 1. Develop an interactive task manager application with the following requirements:
@@ -15,4 +15,4 @@ Interactive task manager application with React-Redux, Node-Express, NoSQL DB, T
 3. Given the interactive nature of this implementation:
  - [x] Feel free to make use of React components to accomplish this task.
  - [x]  It’s advisable to first complete the application without any Redux, and then once everything is working, think about how you can use Redux to minimize the useState usage.
- - [ ] We will provide a slide covering how to approach adding Redux.
+ - [x] We will provide a slide covering how to approach adding Redux.
